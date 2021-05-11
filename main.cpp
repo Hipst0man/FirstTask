@@ -42,7 +42,7 @@ void StringListAdd(char*** head, const char* val)
     char** node = (char**)malloc(2 * sizeof(char *));
 
     node[0] = (char*)malloc(strlen(val)+1);
-    strcpy(node[0], val);
+    if (node[0]) strcpy(node[0], val);
     node[1] = NULL;
 
     if (*head == NULL) *head = node;
