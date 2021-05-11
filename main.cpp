@@ -8,8 +8,9 @@
 void StringListInit(char*** list)
 {
     if (*list) return;
-    *list = nullptr;
-    list[0] = nullptr;
+    *list = (char**)malloc(2 * sizeof(char*));
+    (*list)[0] = nullptr;
+    (*list)[1] = nullptr;
 }
 
 // Destroy list and set pointer to NULL.
@@ -39,13 +40,13 @@ void StringListAdd(char*** head, const char* val)
 {
     if (!val[0]) return;
 
-    char** node = (char**)malloc(2 * sizeof(char *));
+    if (!(*head)[0] && !(*head)[1])
+    {
+        (*head)[0] = (char*)malloc(strlen(val)+1);
+        if ((*head)[0]) strcpy((*head)[0], val);
+        (*head)[1] = NULL;
+    }
 
-    node[0] = (char*)malloc(strlen(val)+1);
-    if (node[0]) strcpy(node[0], val);
-    node[1] = NULL;
-
-    if (*head == NULL) *head = node;
     else 
     {
         char** temp;
@@ -56,6 +57,12 @@ void StringListAdd(char*** head, const char* val)
         {
             temp = (char **)temp[1];
         }
+        
+        char** node = (char**)malloc(2 * sizeof(char *));
+
+        node[0] = (char*)malloc(strlen(val)+1);
+        if (node[0]) strcpy(node[0], val);
+        node[1] = NULL;
 
         temp[1] = (char *)node;
     }
@@ -66,16 +73,16 @@ void display(char** head)
     char **temp;
 
     temp = head;
-    if(!temp) std::cout<<"List is empty\n";
+    if(!temp) printf("List is empty\n");
     else
     {
-        std::cout << "display:\n";
+        printf("display:\n");
         while (temp!=NULL) 
         {
-            std::cout<<temp[0]<<std::endl;
+            printf("%s\n", temp[0]);
             temp = (char **)temp[1];
         }
-        std::cout<<std::endl;
+        printf("\n");
     }
 }
 
@@ -211,12 +218,15 @@ void StringListReplaceInStrings(char** list, const char* before, const char* aft
     {
         if (!strcmp(current[0], before))
         {
-            if (strlen(after) != strlen(current[0]))
+            char* tmp = (char*)realloc(current[0], strlen(after)+1);
+
+            if (tmp)
             {
-                current[0] = (char*)realloc(current[0], strlen(after)+1);
+                current[0] = tmp;
+                strcpy(current[0], after);
             }
             
-            strcpy(current[0], after);
+            else exit(1);
         }
         
         current = (char **)current[1];
