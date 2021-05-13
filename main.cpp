@@ -8,9 +8,7 @@
 void StringListInit(char*** list)
 {
     if (*list) return;
-    *list = (char**)malloc(2 * sizeof(char*));
-    (*list)[0] = nullptr;
-    (*list)[1] = nullptr;
+    *list = (char**)calloc(2, sizeof(char*));   
 }
 
 // Destroy list and set pointer to NULL.
@@ -18,7 +16,7 @@ void StringListInit(char*** list)
 void StringListDestroy(char*** list)
 {
     if (!*list) return;
-    char** current(*list), **previous(nullptr);
+    char** current(*list), **previous(NULL);
     
     while(current[1])
     {
@@ -30,19 +28,19 @@ void StringListDestroy(char*** list)
     free(current[0]);
     free(current);
     
-    *list = nullptr;
-    list[0] = nullptr;
+    *list = NULL;
+    list[0] = NULL;
 }
 
 // Inserts value at the end of the list.
 // void StringListAdd(char*** list, String str);
 void StringListAdd(char*** head, const char* val)
 {
-    if (!val[0]) return;
+    if (!val[0] && !val) return;
 
     if (!(*head)[0] && !(*head)[1])
     {
-        (*head)[0] = (char*)malloc(strlen(val)+1);
+        (*head)[0] = (char*)calloc(strlen(val) + 1, sizeof(char));
         if ((*head)[0]) strcpy((*head)[0], val);
         (*head)[1] = NULL;
     }
@@ -58,9 +56,9 @@ void StringListAdd(char*** head, const char* val)
             temp = (char **)temp[1];
         }
         
-        char** node = (char**)malloc(2 * sizeof(char *));
+        char** node = (char**)calloc(2, sizeof(char *));
 
-        node[0] = (char*)malloc(strlen(val)+1);
+        node[0] = (char*)calloc(strlen(val) + 1, sizeof(char));
         if (node[0]) strcpy(node[0], val);
         node[1] = NULL;
 
@@ -92,24 +90,24 @@ void popBack(char*** head)
 {
     if(!*head) return;
 
-    char** current(*head), **previous(nullptr);
+    char** current(*head), **previous(NULL);
     
     if(!current[1])
     {
         free(current[0]);
         free(current);
-        *head = nullptr;
-        head[0] = nullptr;
+        *head = NULL;
+        head[0] = NULL;
     }
 
     else
     {
-        while(current[1]!=nullptr)
+        while(current[1]!=NULL)
         {
             previous = current;
             current = (char**)current[1];
         }
-        previous[1] = nullptr;
+        previous[1] = NULL;
         free(current[0]);
         free(current);
        
@@ -124,7 +122,7 @@ int StringListSize (char** list)
 
     int counter(0);
     
-    while(list!=nullptr)
+    while(list!=NULL)
     {
         counter++;
         list = (char**)list[1];
@@ -140,7 +138,7 @@ int StringListIndexOf(char** list, const char* str)
     
     int counter(0);
     
-    while(list!=nullptr)
+    while(list!=NULL)
     {
         if(!strcmp(list[0], str)) return counter;
         counter++;
@@ -156,9 +154,9 @@ void StringListRemove(char*** list, const char* str)
 {
     if(!*list || !str[0]) return;
 
-    char** current(*list), **previous(nullptr);
+    char** current(*list), **previous(NULL);
   
-    while (current!=nullptr)
+    while (current!=NULL)
     {
         if(current == *list && !strcmp(current[0], str))
         {
@@ -193,9 +191,9 @@ void StringListRemove(char*** list, const char* str)
 void StringListRemoveDuplicates(char** list)
 {
     if(!list) return;
-    char** current(list), **previous(nullptr);
+    char** current(list), **previous(NULL);
 
-    while(current!=nullptr)
+    while(current!=NULL)
     {
         char** next((char**)current[1]);
 
@@ -214,7 +212,7 @@ void StringListReplaceInStrings(char** list, const char* before, const char* aft
 
     char** current(list);
 
-    while (current!=nullptr)
+    while (current!=NULL)
     {
         if (!strcmp(current[0], before))
         {
@@ -226,7 +224,7 @@ void StringListReplaceInStrings(char** list, const char* before, const char* aft
                 strcpy(current[0], after);
             }
             
-            else exit(1);
+            else return;
         }
         
         current = (char **)current[1];
@@ -278,7 +276,7 @@ void StringListSort(char** list)
 int main()
 {
 
-    char **list {nullptr};
+    char **list {NULL};
     
     StringListInit(&list);
     
@@ -302,7 +300,7 @@ int main()
 
     display(list);
 
-    StringListRemoveDuplicates(list);
+    StringListReplaceInStrings(list, "Cat", "yolo");
 
     display(list);
 
@@ -310,4 +308,3 @@ int main()
     return 0;
 
 }
-
