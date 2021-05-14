@@ -211,12 +211,13 @@ void StringListReplaceInStrings(char** list, const char* before, const char* aft
     if(!list || !before[0] || !after[0]) return;
 
     char** current(list);
+    int afterSzie = strlen(after) + 1;
 
     while (current!=NULL)
     {
         if (!strcmp(current[0], before))
         {
-            char* tmp = (char*)realloc(current[0], strlen(after)+1);
+            char* tmp = (char*)realloc(current[0], afterSzie);
 
             if (tmp)
             {
@@ -242,24 +243,28 @@ void StringListSort(char** list)
 
     while(left[1])
     {   
-        while(right)
-        {
-            char rightLower [strlen(right[0]) + 1];
-            char leftLower [strlen(left[0]) + 1];
+        int leftSize(strlen(left[0]) + 1);
 
-            for (int i = 0; i <= strlen(left[0]); i++)
+        while(right)
+        {   
+            int rightSzie(strlen(right[0]) + 1);
+
+            char rightLower [rightSzie];
+            char leftLower [leftSize];
+
+            for (int i = 0; i < leftSize; i++)
             {
                 leftLower[i] = tolower(left[0][i]);
             }
 
-            for (int i = 0; i <= strlen(right[0]); i++)
+            for (int i = 0; i < rightSzie; i++)
             {
                 rightLower[i] = tolower(right[0][i]);
             }
 
             if(strcmp(leftLower, rightLower) > 0 )
             {
-                char tmp [strlen(leftLower)+1];
+                char tmp [leftSize];
                 strcpy(tmp, left[0]);
                 strcpy(left[0], right[0]);
                 strcpy(right[0], tmp);
@@ -282,25 +287,17 @@ int main()
     
     
     StringListAdd(&list, "city");
-    StringListAdd(&list, "friend");
+    StringListAdd(&list, "frienD");
     StringListAdd(&list, "book");
     StringListAdd(&list, "apple");
     StringListAdd(&list, "Cat");
+    StringListAdd(&list, "Cat");
+    StringListAdd(&list, "friend");
+    StringListAdd(&list, "apple");
     
     display(list);
 
     StringListSort(list);
-
-    display(list);
-
-    StringListAdd(&list, "Cat");
-    StringListAdd(&list, "friend");
-    StringListAdd(&list, "apple");
-
-
-    display(list);
-
-    StringListReplaceInStrings(list, "Cat", "yolo");
 
     display(list);
 
