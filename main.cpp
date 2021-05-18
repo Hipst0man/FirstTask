@@ -16,7 +16,8 @@ void StringListInit(char*** list)
 void StringListDestroy(char*** list)
 {
     if (!*list) return;
-    char** current(*list), **previous(NULL);
+    char** current = *list; 
+    char** previous = NULL;
     
     while(current[1])
     {
@@ -90,7 +91,8 @@ void popBack(char*** head)
 {
     if(!*head) return;
 
-    char** current(*head), **previous(NULL);
+    char** current = *head;
+    char** previous = NULL;
     
     if(!current[1])
     {
@@ -120,7 +122,7 @@ int StringListSize (char** list)
 {
     if(!list) return 0;
 
-    int counter(0);
+    int counter = 0;
     
     while(list!=NULL)
     {
@@ -136,7 +138,7 @@ int StringListIndexOf(char** list, const char* str)
 {
     if(!list || !str[0]) return -2;
     
-    int counter(0);
+    int counter = 0;
     
     while(list!=NULL)
     {
@@ -154,7 +156,8 @@ void StringListRemove(char*** list, const char* str)
 {
     if(!*list || !str[0]) return;
 
-    char** current(*list), **previous(NULL);
+    char** current = *list;
+    char** previous = NULL;
   
     while (current!=NULL)
     {
@@ -191,7 +194,8 @@ void StringListRemove(char*** list, const char* str)
 void StringListRemoveDuplicates(char** list)
 {
     if(!list) return;
-    char** current(list), **previous(NULL);
+    char** current = list;
+    char** previous = NULL;
 
     while(current!=NULL)
     {
@@ -210,7 +214,7 @@ void StringListReplaceInStrings(char** list, const char* before, const char* aft
 {
     if(!list || !before[0] || !after[0]) return;
 
-    char** current(list);
+    char** current = list;
     int afterSzie = strlen(after) + 1;
 
     while (current!=NULL)
@@ -239,17 +243,19 @@ void StringListSort(char** list)
 {
     if(!list) return;
 
-    char** left(list), **right((char**)list[1]);
+    char** left = list; 
+    char** right = (char**)list[1];
 
     while(left[1])
     {   
-        int leftSize(strlen(left[0]) + 1);
+        int leftSize = strlen(left[0]) + 1;
 
         while(right)
         {   
-            int rightSzie(strlen(right[0]) + 1);
+            int rightSize;
+            rightSize = strlen(right[0]) + 1;
 
-            char rightLower [rightSzie];
+            char rightLower [rightSize];
             char leftLower [leftSize];
 
             for (int i = 0; i < leftSize; i++)
@@ -257,7 +263,7 @@ void StringListSort(char** list)
                 leftLower[i] = tolower(left[0][i]);
             }
 
-            for (int i = 0; i < rightSzie; i++)
+            for (int i = 0; i < rightSize; i++)
             {
                 rightLower[i] = tolower(right[0][i]);
             }
@@ -281,7 +287,7 @@ void StringListSort(char** list)
 int main()
 {
 
-    char **list {NULL};
+    char **list = NULL;
     
     StringListInit(&list);
     
